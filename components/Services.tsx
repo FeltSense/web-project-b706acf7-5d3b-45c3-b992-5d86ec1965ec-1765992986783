@@ -26,6 +26,65 @@ const services = [
   },
 ];
 
+function ServiceCard({
+  service,
+  index,
+  isLarge,
+}: {
+  service: (typeof services)[0];
+  index: number;
+  isLarge: boolean;
+}) {
+  const IconComponent = service.icon;
+
+  return (
+    <motion.div
+      key={service.title}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className={`${
+        isLarge ? 'md:col-span-2' : ''
+      } ${
+        index === 3 ? 'bg-slate-900' : 'bg-white'
+      } rounded-3xl shadow-sm ${
+        index === 3 ? 'border border-slate-800' : 'border border-slate-100'
+      } p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300 min-h-80`}
+    >
+      <div
+        className={`${
+          index === 3
+            ? 'bg-violet-600'
+            : 'bg-violet-50'
+        } rounded-2xl w-16 h-16 flex items-center justify-center mb-6`}
+      >
+        <IconComponent
+          className={`w-8 h-8 ${
+            index === 3 ? 'text-white' : 'text-violet-600'
+          }`}
+        />
+      </div>
+      <h3
+        className={`${
+          isLarge ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'
+        } font-semibold tracking-tight leading-[1.3] ${
+          index === 3 ? 'text-white' : 'text-slate-900'
+        } mb-4`}
+      >
+        {service.title}
+      </h3>
+      <p
+        className={`${
+          index === 3 ? 'text-slate-400 text-lg' : 'text-slate-500'
+        } leading-relaxed`}
+      >
+        {service.description}
+      </p>
+    </motion.div>
+  );
+}
+
 export default function Services() {
   return (
     <section id="services" className="py-24 md:py-32 bg-white">
@@ -45,85 +104,14 @@ export default function Services() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* First card - spans 2 columns */}
-          <motion.div
-            key={services[0].title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0 }}
-            className="md:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-100 p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300 min-h-80"
-          >
-            <div className="bg-violet-50 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
-              <services[0].icon className="w-8 h-8 text-violet-600" />
-            </div>
-            <h3 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.3] text-slate-900 mb-4">
-              {services[0].title}
-            </h3>
-            <p className="text-slate-500 text-lg leading-relaxed">
-              {services[0].description}
-            </p>
-          </motion.div>
-
-          {/* Second card */}
-          <motion.div
-            key={services[1].title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300 min-h-80"
-          >
-            <div className="bg-violet-50 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
-              <services[1].icon className="w-8 h-8 text-violet-600" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-semibold tracking-tight leading-[1.3] text-slate-900 mb-4">
-              {services[1].title}
-            </h3>
-            <p className="text-slate-500 leading-relaxed">
-              {services[1].description}
-            </p>
-          </motion.div>
-
-          {/* Third card */}
-          <motion.div
-            key={services[2].title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300 min-h-80"
-          >
-            <div className="bg-violet-50 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
-              <services[2].icon className="w-8 h-8 text-violet-600" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-semibold tracking-tight leading-[1.3] text-slate-900 mb-4">
-              {services[2].title}
-            </h3>
-            <p className="text-slate-500 leading-relaxed">
-              {services[2].description}
-            </p>
-          </motion.div>
-
-          {/* Fourth card - spans 2 columns, dark background */}
-          <motion.div
-            key={services[3].title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="md:col-span-2 bg-slate-900 rounded-3xl shadow-sm border border-slate-800 p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300 min-h-80"
-          >
-            <div className="bg-violet-600 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
-              <services[3].icon className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.3] text-white mb-4">
-              {services[3].title}
-            </h3>
-            <p className="text-slate-400 text-lg leading-relaxed">
-              {services[3].description}
-            </p>
-          </motion.div>
+          {services.map((service, index) => (
+            <ServiceCard
+              key={service.title}
+              service={service}
+              index={index}
+              isLarge={index === 0 || index === 3}
+            />
+          ))}
         </div>
       </div>
     </section>
